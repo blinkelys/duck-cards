@@ -5,7 +5,26 @@ from entities import Player, Enemy
 
 def load_cards(filename="./cards.json"):
     with open(filename, "r") as file:
-        return json.load(file)
+        cards = json.load(file)
+    return normalize_cards(cards)
+
+def normalize_cards(cards):
+    """
+    Ensures card data is consistent:
+    - type lowercase
+    - strong_against and weak_against exist
+    - damage, mana_cost numeric
+    """
+    normalized = []
+    for card in cards:
+        card['type'] = card.get('type', 'attack').lower()  # lowercase type
+        card['mana_cost'] = int(card.get('mana_cost', 0))
+        card['damage'] = int(card.get('damage', 0))
+        card['strong_against'] = card.get('strong_against', None)
+        card['weak_against'] = card.get('weak_against', None)
+        normalized.append(card)
+    return normalized
+
 
 def setup_enemy(enemy):
     enemy_types = ["Goblin", "Orc", "Troll", "Dark Mage", "Skeleton Warrior", "Vampire", "Werewolf", "Zombie", "Demon", "Ghost"]
