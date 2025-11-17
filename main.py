@@ -21,7 +21,7 @@ def playerSetup():
     player.name = input()
     
     print("What is your preferred element?")
-    def chooseElement()_    
+    def chooseElement():
         print("1: Fire, 2: Water, 3: Earth, 4: Air")
         playerElementPrivate = input()
         if playerElementPrivate == "1":
