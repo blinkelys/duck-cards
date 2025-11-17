@@ -68,3 +68,17 @@ createDeck()
 print("Deck created with the following cards:")
 for card in player.deck:
     print(f"- {card['name']} ({card['element']})")  
+
+def setupComplete():
+    print("Game setup complete. Ready to play?")
+    selection = input("Y/n: ").lower()
+    if selection == "y":
+        print("Starting game...")
+    elif selection == "n":
+        print("Exiting setup.")
+    else:
+        print("Please choose a valid option!")
+        setupComplete()
+
+setupComplete()
+
