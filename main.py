@@ -36,8 +36,8 @@ def playerSetup():
             print("Please pick one of the valid elements:")
     chooseElement()
     
-    def confrimPlayer():   
-        print(player)
+    def confirmPlayer():   
+        print(player.name + ", your chosen element is " + player.element + ".")
         print("Is this correct? Y/n")
         selection = input().lower()
         if selection == "y":
@@ -46,4 +46,25 @@ def playerSetup():
             playerSetup()
         else:
             print("Please choose a valid option!")
-    confrimPlayer()
+    confirmPlayer()
+
+playerSetup()
+
+def createDeck():
+    elementCards = [card for card in cards if card['element'] == player.element]
+    otherCards = [card for card in cards if card['element'] != player.element]
+    
+    while len(player.deck) < 20:
+        if random.random() < 0.6 and elementCards:
+            card = random.choice(elementCards)
+        else:
+            card = random.choice(otherCards)
+        
+        if card not in player.deck:
+            player.deck.append(card)
+
+createDeck()
+
+print("Deck created with the following cards:")
+for card in player.deck:
+    print(f"- {card['name']} ({card['element']})")  
