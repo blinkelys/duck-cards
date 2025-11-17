@@ -1,4 +1,6 @@
 # entities.py
+
+# Define Player
 class Player:
     def __init__(self):
         self.name = ""
@@ -11,6 +13,7 @@ class Player:
         self.deck = []
         self.hand = []
 
+# Define Enemy
 class Enemy:
     def __init__(self):
         self.name = ""
