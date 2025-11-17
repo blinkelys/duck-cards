@@ -136,6 +136,7 @@ def drawCard():
     else:
         print("No more cards in deck!")
 
+# Place a Card
 def placeCard():
     showHand()
     print("Select a card to play by number:")
