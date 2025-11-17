@@ -1,0 +1,1331 @@
+[ 
+
+  { 
+
+    "id": "fire_1", 
+
+    "name": "Flame Burst", 
+
+    "element": "Fire", 
+
+    "type": "Attack", 
+
+    "mana_cost": 6, 
+
+    "damage": 18, 
+
+    "effect": "Deals fire damage; strong against Air.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_2", 
+
+    "name": "Inferno Wave", 
+
+    "element": "Fire", 
+
+    "type": "Attack", 
+
+    "mana_cost": 10, 
+
+    "damage": 30, 
+
+    "effect": "Deals heavy fire damage to target.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_3", 
+
+    "name": "Burning Armor", 
+
+    "element": "Fire", 
+
+    "type": "Defense", 
+
+    "mana_cost": 7, 
+
+    "damage": 0, 
+
+    "effect": "Creates a burning shield that reflects 10 damage.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_4", 
+
+    "name": "Lava Bolt", 
+
+    "element": "Fire", 
+
+    "type": "Attack", 
+
+    "mana_cost": 5, 
+
+    "damage": 15, 
+
+    "effect": "Medium fire attack with chance to burn.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_5", 
+
+    "name": "Scorch", 
+
+    "element": "Fire", 
+
+    "type": "Curse", 
+
+    "mana_cost": 4, 
+
+    "damage": 0, 
+
+    "effect": "Target discards a random card.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_6", 
+
+    "name": "Molten Core", 
+
+    "element": "Fire", 
+
+    "type": "Mana", 
+
+    "mana_cost": 3, 
+
+    "damage": 0, 
+
+    "effect": "Increase max mana by 5.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_7", 
+
+    "name": "Ember Heal", 
+
+    "element": "Fire", 
+
+    "type": "Healing", 
+
+    "mana_cost": 5, 
+
+    "damage": -15, 
+
+    "effect": "Heals 15 HP using heat energy.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_8", 
+
+    "name": "Volcanic Rage", 
+
+    "element": "Fire", 
+
+    "type": "Attack", 
+
+    "mana_cost": 12, 
+
+    "damage": 40, 
+
+    "effect": "Massive fire attack, ignores shields.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_9", 
+
+    "name": "Ash Veil", 
+
+    "element": "Fire", 
+
+    "type": "Defense", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Reduce incoming damage by 10 next turn.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+  { 
+
+    "id": "fire_10", 
+
+    "name": "Phoenix Spark", 
+
+    "element": "Fire", 
+
+    "type": "Healing", 
+
+    "mana_cost": 8, 
+
+    "damage": -25, 
+
+    "effect": "Heals 25 HP and regenerates 5 mana.", 
+
+    "strong_against": "Air", 
+
+    "weak_against": "Water" 
+
+  }, 
+
+ 
+
+  { 
+
+    "id": "water_1", 
+
+    "name": "Aqua Slash", 
+
+    "element": "Water", 
+
+    "type": "Attack", 
+
+    "mana_cost": 5, 
+
+    "damage": 15, 
+
+    "effect": "Deals water damage; strong against Fire.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_2", 
+
+    "name": "Tidal Shield", 
+
+    "element": "Water", 
+
+    "type": "Defense", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Creates a shield absorbing 15 damage.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_3", 
+
+    "name": "Healing Wave", 
+
+    "element": "Water", 
+
+    "type": "Healing", 
+
+    "mana_cost": 8, 
+
+    "damage": -30, 
+
+    "effect": "Restores 30 HP.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_4", 
+
+    "name": "Frost Spike", 
+
+    "element": "Water", 
+
+    "type": "Attack", 
+
+    "mana_cost": 7, 
+
+    "damage": 20, 
+
+    "effect": "Medium attack with a chance to slow enemy next turn.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_5", 
+
+    "name": "Steam Burst", 
+
+    "element": "Water", 
+
+    "type": "Attack", 
+
+    "mana_cost": 6, 
+
+    "damage": 18, 
+
+    "effect": "Water/fire hybrid; deals normal damage to all.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_6", 
+
+    "name": "Soothing Rain", 
+
+    "element": "Water", 
+
+    "type": "Healing", 
+
+    "mana_cost": 4, 
+
+    "damage": -10, 
+
+    "effect": "Small area heal for yourself.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_7", 
+
+    "name": "Mana Flood", 
+
+    "element": "Water", 
+
+    "type": "Mana", 
+
+    "mana_cost": 5, 
+
+    "damage": 0, 
+
+    "effect": "Increase current mana by 10.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_8", 
+
+    "name": "Drown", 
+
+    "element": "Water", 
+
+    "type": "Curse", 
+
+    "mana_cost": 9, 
+
+    "damage": 0, 
+
+    "effect": "Enemy loses 10 mana next turn.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_9", 
+
+    "name": "Ice Armor", 
+
+    "element": "Water", 
+
+    "type": "Defense", 
+
+    "mana_cost": 8, 
+
+    "damage": 0, 
+
+    "effect": "Reduces all damage by 20 for 2 turns.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+  { 
+
+    "id": "water_10", 
+
+    "name": "Tsunami", 
+
+    "element": "Water", 
+
+    "type": "Attack", 
+
+    "mana_cost": 14, 
+
+    "damage": 45, 
+
+    "effect": "Huge water strike, ignores shields.", 
+
+    "strong_against": "Fire", 
+
+    "weak_against": "Earth" 
+
+  }, 
+
+ 
+
+  { 
+
+    "id": "earth_1", 
+
+    "name": "Stone Fist", 
+
+    "element": "Earth", 
+
+    "type": "Attack", 
+
+    "mana_cost": 5, 
+
+    "damage": 15, 
+
+    "effect": "Deals earth damage; strong against Water.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_2", 
+
+    "name": "Rock Shield", 
+
+    "element": "Earth", 
+
+    "type": "Defense", 
+
+    "mana_cost": 7, 
+
+    "damage": 0, 
+
+    "effect": "Blocks next 20 damage.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_3", 
+
+    "name": "Quake", 
+
+    "element": "Earth", 
+
+    "type": "Attack", 
+
+    "mana_cost": 12, 
+
+    "damage": 40, 
+
+    "effect": "Heavy attack, ignores 10 defense.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_4", 
+
+    "name": "Nature’s Gift", 
+
+    "element": "Earth", 
+
+    "type": "Healing", 
+
+    "mana_cost": 6, 
+
+    "damage": -20, 
+
+    "effect": "Heals 20 HP using life energy.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_5", 
+
+    "name": "Mana Bloom", 
+
+    "element": "Earth", 
+
+    "type": "Mana", 
+
+    "mana_cost": 4, 
+
+    "damage": 0, 
+
+    "effect": "Increase max mana by 5 permanently.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_6", 
+
+    "name": "Mud Trap", 
+
+    "element": "Earth", 
+
+    "type": "Curse", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Enemy skips next attack phase.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_7", 
+
+    "name": "Boulder Throw", 
+
+    "element": "Earth", 
+
+    "type": "Attack", 
+
+    "mana_cost": 8, 
+
+    "damage": 25, 
+
+    "effect": "Powerful earth attack.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_8", 
+
+    "name": "Sandstorm", 
+
+    "element": "Earth", 
+
+    "type": "Utility", 
+
+    "mana_cost": 5, 
+
+    "damage": 0, 
+
+    "effect": "Both players discard one random card.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_9", 
+
+    "name": "Iron Skin", 
+
+    "element": "Earth", 
+
+    "type": "Defense", 
+
+    "mana_cost": 10, 
+
+    "damage": 0, 
+
+    "effect": "Reduces incoming damage by 25 for 2 turns.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+  { 
+
+    "id": "earth_10", 
+
+    "name": "Gaia’s Wrath", 
+
+    "element": "Earth", 
+
+    "type": "Attack", 
+
+    "mana_cost": 14, 
+
+    "damage": 50, 
+
+    "effect": "Massive earth damage.", 
+
+    "strong_against": "Water", 
+
+    "weak_against": "Air" 
+
+  }, 
+
+ 
+
+  { 
+
+    "id": "air_1", 
+
+    "name": "Wind Slash", 
+
+    "element": "Air", 
+
+    "type": "Attack", 
+
+    "mana_cost": 5, 
+
+    "damage": 15, 
+
+    "effect": "Deals air damage; strong against Earth.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_2", 
+
+    "name": "Lightning Bolt", 
+
+    "element": "Air", 
+
+    "type": "Attack", 
+
+    "mana_cost": 8, 
+
+    "damage": 25, 
+
+    "effect": "High-speed lightning strike.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_3", 
+
+    "name": "Gale Barrier", 
+
+    "element": "Air", 
+
+    "type": "Defense", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Reduces next 15 damage.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_4", 
+
+    "name": "Storm Surge", 
+
+    "element": "Air", 
+
+    "type": "Attack", 
+
+    "mana_cost": 10, 
+
+    "damage": 35, 
+
+    "effect": "Powerful storm attack, chance to disable opponent next turn.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_5", 
+
+    "name": "Static Field", 
+
+    "element": "Air", 
+
+    "type": "Curse", 
+
+    "mana_cost": 7, 
+
+    "damage": 0, 
+
+    "effect": "Enemy loses 5 mana next turn.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_6", 
+
+    "name": "Cloud Heal", 
+
+    "element": "Air", 
+
+    "type": "Healing", 
+
+    "mana_cost": 4, 
+
+    "damage": -10, 
+
+    "effect": "Restores 10 HP.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_7", 
+
+    "name": "Thunderstorm", 
+
+    "element": "Air", 
+
+    "type": "Attack", 
+
+    "mana_cost": 12, 
+
+    "damage": 40, 
+
+    "effect": "Large AOE air damage.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_8", 
+
+    "name": "Updraft", 
+
+    "element": "Air", 
+
+    "type": "Mana", 
+
+    "mana_cost": 4, 
+
+    "damage": 0, 
+
+    "effect": "Restore 8 mana instantly.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_9", 
+
+    "name": "Hurricane Shield", 
+
+    "element": "Air", 
+
+    "type": "Defense", 
+
+    "mana_cost": 9, 
+
+    "damage": 0, 
+
+    "effect": "Negates all damage next turn.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+  { 
+
+    "id": "air_10", 
+
+    "name": "Cyclone Fury", 
+
+    "element": "Air", 
+
+    "type": "Attack", 
+
+    "mana_cost": 14, 
+
+    "damage": 45, 
+
+    "effect": "Massive air strike that may remove one enemy card.", 
+
+    "strong_against": "Earth", 
+
+    "weak_against": "Fire" 
+
+  }, 
+
+ 
+
+  { 
+
+    "id": "util_1", 
+
+    "name": "Mana Surge", 
+
+    "element": "Utility", 
+
+    "type": "Mana", 
+
+    "mana_cost": 3, 
+
+    "damage": 0, 
+
+    "effect": "Restore 10 mana.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_2", 
+
+    "name": "Greater Heal", 
+
+    "element": "Utility", 
+
+    "type": "Healing", 
+
+    "mana_cost": 10, 
+
+    "damage": -40, 
+
+    "effect": "Restores 40 HP.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_3", 
+
+    "name": "Minor Shield", 
+
+    "element": "Utility", 
+
+    "type": "Defense", 
+
+    "mana_cost": 4, 
+
+    "damage": 0, 
+
+    "effect": "Blocks next 10 damage.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_4", 
+
+    "name": "Mana Drain", 
+
+    "element": "Utility", 
+
+    "type": "Curse", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Enemy loses 10 mana.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_5", 
+
+    "name": "Card Peek", 
+
+    "element": "Utility", 
+
+    "type": "Utility", 
+
+    "mana_cost": 5, 
+
+    "damage": 0, 
+
+    "effect": "Reveal opponent’s hand.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_6", 
+
+    "name": "Rejuvenate", 
+
+    "element": "Utility", 
+
+    "type": "Healing", 
+
+    "mana_cost": 6, 
+
+    "damage": -20, 
+
+    "effect": "Restore 20 HP and 5 mana.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_7", 
+
+    "name": "Energy Barrier", 
+
+    "element": "Utility", 
+
+    "type": "Defense", 
+
+    "mana_cost": 8, 
+
+    "damage": 0, 
+
+    "effect": "Negate next 25 damage.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_8", 
+
+    "name": "Confusion", 
+
+    "element": "Utility", 
+
+    "type": "Curse", 
+
+    "mana_cost": 7, 
+
+    "damage": 0, 
+
+    "effect": "Opponent discards a random card.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_9", 
+
+    "name": "Focus Mind", 
+
+    "element": "Utility", 
+
+    "type": "Utility", 
+
+    "mana_cost": 3, 
+
+    "damage": 0, 
+
+    "effect": "Draw 1 extra card next turn.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_10", 
+
+    "name": "Mana Overflow", 
+
+    "element": "Utility", 
+
+    "type": "Mana", 
+
+    "mana_cost": 8, 
+
+    "damage": 0, 
+
+    "effect": "Increase max mana by 10 permanently.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_11", 
+
+    "name": "Energy Pulse", 
+
+    "element": "Utility", 
+
+    "type": "Attack", 
+
+    "mana_cost": 5, 
+
+    "damage": 15, 
+
+    "effect": "Neutral energy blast that ignores elemental effects.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_12", 
+
+    "name": "Time Skip", 
+
+    "element": "Utility", 
+
+    "type": "Curse", 
+
+    "mana_cost": 10, 
+
+    "damage": 0, 
+
+    "effect": "Opponent skips their next turn.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_13", 
+
+    "name": "Arcane Knowledge", 
+
+    "element": "Utility", 
+
+    "type": "Utility", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Draw two cards immediately.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_14", 
+
+    "name": "Life Conversion", 
+
+    "element": "Utility", 
+
+    "type": "Utility", 
+
+    "mana_cost": 0, 
+
+    "damage": -10, 
+
+    "effect": "Lose 10 HP to restore 10 mana.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_15", 
+
+    "name": "Reflective Ward", 
+
+    "element": "Utility", 
+
+    "type": "Defense", 
+
+    "mana_cost": 9, 
+
+    "damage": 0, 
+
+    "effect": "Reflects 50% of next incoming damage.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_16", 
+
+    "name": "Disarm", 
+
+    "element": "Utility", 
+
+    "type": "Curse", 
+
+    "mana_cost": 5, 
+
+    "damage": 0, 
+
+    "effect": "Opponent must discard their highest damage card.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_17", 
+
+    "name": "Mana Siphon", 
+
+    "element": "Utility", 
+
+    "type": "Mana", 
+
+    "mana_cost": 7, 
+
+    "damage": 0, 
+
+    "effect": "Steal 10 mana from your opponent.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_18", 
+
+    "name": "Renewal", 
+
+    "element": "Utility", 
+
+    "type": "Healing", 
+
+    "mana_cost": 9, 
+
+    "damage": -30, 
+
+    "effect": "Fully restore mana regeneration and heal 30 HP.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_19", 
+
+    "name": "Overload", 
+
+    "element": "Utility", 
+
+    "type": "Curse", 
+
+    "mana_cost": 6, 
+
+    "damage": 0, 
+
+    "effect": "Both players lose 5 mana and 10 HP.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  }, 
+
+  { 
+
+    "id": "util_20", 
+
+    "name": "Mystic Reset", 
+
+    "element": "Utility", 
+
+    "type": "Utility", 
+
+    "mana_cost": 10, 
+
+    "damage": 0, 
+
+    "effect": "Discard your hand and draw three new cards.", 
+
+    "strong_against": null, 
+
+    "weak_against": null 
+
+  } 
+
+] 
