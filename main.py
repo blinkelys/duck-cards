@@ -2,11 +2,18 @@
 from entities import Player, Enemy
 from setup import load_cards, setup_player, setup_enemy, create_deck
 from gameplay import start_game, show_stats, player_turn, enemy_turn
+import pyfiglet
 
 # Initialize
 player = Player()
 enemy = Enemy()
+
+# Trigger card loading and setup
 cards = load_cards()
+
+# Display game title
+title = pyfiglet.figlet_format("Duck Cards")
+print(title)
 
 # Setup
 setup_player(player)
