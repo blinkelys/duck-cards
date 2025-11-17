@@ -16,6 +16,25 @@ class player():
     deck = []
     hand = []
 
+class enemy():
+    name = ""
+    health = 100
+    mana = 20
+    element = ""
+    activeCurse = ""
+    activeShield = ""
+    activeCards = []
+    deck = []
+    hand = []
+
+enemyTypes = ["Goblin", "Orc", "Troll", "Dark Mage", "Skeleton Warrior", "Vampire", "Werewolf", "Zombie", "Demon", "Ghost"]
+
+def enemySetup():
+    enemy.name = random.choice(enemyTypes)
+    enemy.element = random.choice(["Fire", "Water", "Earth", "Air"])
+
+enemySetup()
+
 def playerSetup():
     print("What is your name? ")
     player.name = input()
@@ -82,3 +101,55 @@ def setupComplete():
 
 setupComplete()
 
+# Ingame Functions
+def startGame():
+    print("Your enemy is a " + enemy.name + " with " + enemy.element + " element.")
+
+    print("Dealing initial hand...")
+    for _ in range(3):
+        if player.deck:
+            card = player.deck.pop(0)
+            player.hand.append(card)
+    print("Your starting hand:")
+    for card in player.hand:
+        print(f"- {card['name']} ({card['element']})")
+
+startGame()
+
+# Display Player and Enemy Stats
+def showStats():
+    print(f"{player.name} - Health: {player.health}, Mana: {player.mana}, Element: {player.element}")
+    print(f"{enemy.name} - Health: {enemy.health}, Mana: {enemy.mana}, Element: {enemy.element}")
+
+# Show Player Hand
+def showHand():
+    print("Your current hand:")
+    for card in player.hand:
+        print(f"- {card['name']} ({card['element']})")
+
+# Draw a Card
+def drawCard():
+    if player.deck:
+        card = player.deck.pop(0)
+        player.hand.append(card)
+        print(f"Drew card: {card['name']} ({card['element']})")
+    else:
+        print("No more cards in deck!")
+
+def placeCard():
+    showHand()
+    print("Select a card to play by number:")
+    for idx, card in enumerate(player.hand):
+        print(f"{idx + 1}: {card['name']} ({card['element']})")
+    
+    selection = input()
+    try:
+        index = int(selection) - 1
+        if 0 <= index < len(player.hand):
+            card = player.hand.pop(index)
+            player.activeCards.append(card)
+            print(f"Played card: {card['name']} ({card['element']})")
+        else:
+            print("Invalid selection.")
+    except ValueError:
+        print("Please enter a valid number.")
