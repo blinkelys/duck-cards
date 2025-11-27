@@ -1,9 +1,13 @@
 # main.py
+import os
 import pyfiglet
 from entities import Player, Enemy
 from setup import load_cards, setup_player, setup_enemy, create_deck
 from gameplay import start_game, show_stats, player_turn, enemy_turn
 
+def clear_screen():
+    """Clear the console screen."""
+    os.system("cls" if os.name == "nt" else "clear")
 
 def initialize_game():
     """Initialize and return player, enemy, and card data."""
@@ -35,11 +39,18 @@ def main_loop(player, enemy):
     show_stats(player, enemy)
 
     while player.health > 0 and enemy.health > 0:
+
+        input("\nPress Enter to continue...")
+        clear_screen()
+
         # Player turn
         player_turn(player, enemy)
         if enemy.health <= 0:
             print(f"\n{enemy.name} has been defeated! You win!")
             break
+
+        input("\nPress Enter to continue...")
+        clear_screen()
 
         # Enemy turn
         enemy_turn(enemy, player)
