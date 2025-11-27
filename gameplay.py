@@ -1,7 +1,8 @@
-# gameplay.py
 import random
 
-# --- Constants ---
+# ================================================
+# CONSTANTS & CONFIG
+# ================================================
 
 MANA_REGEN_PER_TURN = 5
 
@@ -12,7 +13,12 @@ ELEMENT_ADVANTAGE = {
     "Water": "Fire"
 }
 
-# --- Colors ---
+MAX_HEALTH = 100
+
+
+# ================================================
+# COLORS
+# ================================================
 class Colors:
     RESET = "\033[0m"
     BOLD = "\033[1m"
@@ -24,52 +30,68 @@ class Colors:
     BLUE = "\033[94m"
 
 
-# --- Init game ---
+# ================================================
+# CORE GAMEPLAY FUNCTIONS
+# ================================================
+
 def start_game(player, enemy):
     print(
         Colors.YELLOW +
-        f"Your enemy is a {enemy.name} with {enemy.element} element." +
+        f"Your enemy is a {enemy.name} ({enemy.element})." +
         Colors.RESET
     )
-    print(Colors.CYAN + "Dealing initial hand..." + Colors.RESET)
 
+    print(Colors.CYAN + "Dealing initial hand..." + Colors.RESET)
     for _ in range(3):
         draw_card(player)
 
     show_hand(player)
 
 
+# ------------------------------------------------
+# DISPLAY HELPERS
+# ------------------------------------------------
+
 def show_stats(player, enemy):
-    print(Colors.MAGENTA + "--- Current Stats ---" + Colors.RESET)
+    print(Colors.MAGENTA + "\n--- Current Stats ---" + Colors.RESET)
     print(
         Colors.GREEN +
-        f"{player.name} - Health: {player.health}, Mana: {player.mana}, Element: {player.element}" +
+        f"{player.name}: {player.health} HP | {player.mana} Mana | Shield: {player.shield}" +
         Colors.RESET
     )
     print(
         Colors.RED +
-        f"{enemy.name} - Health: {enemy.health}, Mana: {enemy.mana}, Element: {enemy.element}" +
+        f"{enemy.name}: {enemy.health} HP | {enemy.mana} Mana | Shield: {enemy.shield}" +
         Colors.RESET
     )
 
 
 def show_hand(player):
     print(Colors.BLUE + "\nYour current hand:" + Colors.RESET)
-    for idx, card in enumerate(player.hand):
+
+    if not player.hand:
+        print(Colors.YELLOW + "Your hand is empty!" + Colors.RESET)
+        return
+
+    for i, card in enumerate(player.hand, 1):
         print(
-            f"{Colors.CYAN}{idx + 1}: {card['name']} "
-            f"({card['element']} {card['mana_cost']} Mana){Colors.RESET}"
+            f"{Colors.CYAN}{i}: {card['name']} "
+            f"({card['type']} | {card['mana_cost']} Mana){Colors.RESET}"
         )
 
 
-# --- Handle cards ---
+# ------------------------------------------------
+# DRAWING + PLAYING CARDS
+# ------------------------------------------------
+
 def draw_card(player):
     if not player.deck:
-        print(Colors.RED + "No more cards in deck!" + Colors.RESET)
+        print(Colors.RED + "Your deck is empty!" + Colors.RESET)
         return
 
     card = player.deck.pop(0)
     player.hand.append(card)
+
     print(
         Colors.GREEN +
         f"Drew card: {card['name']} ({card['element']} {card['mana_cost']} Mana)" +
@@ -77,177 +99,246 @@ def draw_card(player):
     )
 
 
-def place_card(player):
+def choose_card(player):
     show_hand(player)
-    selection = input(
-        Colors.YELLOW + "Select a card to play by number (or press Enter to skip): " + Colors.RESET
-    )
+    choice = input(Colors.YELLOW +
+                   "Select a card number (Enter = Skip): " + Colors.RESET)
 
-    if not selection:
+    if not choice:
         return None
 
     try:
-        index = int(selection) - 1
-        if 0 <= index < len(player.hand):
-            card = player.hand.pop(index)
-            player.activeCards.append(card)
-            print(
-                Colors.GREEN +
-                f"Played card: {card['name']} ({card['element']} {card['mana_cost']} Mana)" +
-                Colors.RESET
-            )
-            return card
-
-        print(Colors.RED + "Invalid selection." + Colors.RESET)
+        idx = int(choice) - 1
+        if idx < 0 or idx >= len(player.hand):
+            print(Colors.RED + "Invalid card." + Colors.RESET)
+            return None
+        return player.hand.pop(idx)
 
     except ValueError:
-        print(Colors.RED + "Please enter a valid number." + Colors.RESET)
+        print(Colors.RED + "Invalid input." + Colors.RESET)
+        return None
 
-    return None
 
+# ================================================
+# TURN HANDLING
+# ================================================
 
-# --- Turn logic ---
 def player_turn(player, enemy):
-    print(Colors.GREEN + Colors.BOLD + "\n--- Your Turn ---" + Colors.RESET)
+    print(Colors.GREEN + Colors.BOLD + "\n--- YOUR TURN ---" + Colors.RESET)
 
-    # Mana regen
+    # Regenerate mana
     player.mana += MANA_REGEN_PER_TURN
     print(
         Colors.YELLOW +
-        f"{player.name} regenerates {MANA_REGEN_PER_TURN} mana. Current mana: {player.mana}" +
+        f"You regenerate {MANA_REGEN_PER_TURN} mana. (Now {player.mana})" +
         Colors.RESET
     )
 
-    # Draw a card
+    # Draw card
     draw_card(player)
 
+    # Apply curse effects
+    resolve_curse(player)
+
     # Choose card
-    card = place_card(player)
+    card = choose_card(player)
     if card:
-        apply_card_effect(card, player, enemy)
+        apply_card(card, player, enemy)
 
 
 def enemy_turn(enemy, player):
-    print(
-        Colors.RED + Colors.BOLD +
-        f"\n--- {enemy.name}'s Turn ---" +
-        Colors.RESET
-    )
+    print(Colors.RED + Colors.BOLD +
+          f"\n--- {enemy.name.upper()} TURN ---" + Colors.RESET)
 
     enemy.mana += MANA_REGEN_PER_TURN
     print(
         Colors.YELLOW +
-        f"{enemy.name} regenerates {MANA_REGEN_PER_TURN} mana. Current mana: {enemy.mana}" +
+        f"{enemy.name} regenerates {MANA_REGEN_PER_TURN} mana. (Now {enemy.mana})" +
         Colors.RESET
     )
 
+    resolve_curse(enemy)
+
     # Draw
     if enemy.deck:
-        drawn = enemy.deck.pop(0)
-        enemy.hand.append(drawn)
+        enemy.hand.append(enemy.deck.pop(0))
 
-    # Find playable
-    playable = [c for c in enemy.hand if c.get("mana_cost", 0) <= enemy.mana]
+    # Choose playable card
+    playable = [c for c in enemy.hand if c["mana_cost"] <= enemy.mana]
 
     if not playable:
         print(
             Colors.YELLOW +
-            f"{enemy.name} has no cards it can play this turn." +
+            f"{enemy.name} has no playable cards!" +
             Colors.RESET
         )
         return
 
-    # Play random
     card = random.choice(playable)
     enemy.hand.remove(card)
-    enemy.activeCards.append(card)
 
     print(
         Colors.RED +
-        f"{enemy.name} plays {card['name']} ({card['element']})" +
+        f"{enemy.name} plays {card['name']} ({card['type']})" +
         Colors.RESET
     )
 
-    apply_card_effect(card, enemy, player)
+    apply_card(card, enemy, player)
 
 
-# --- Card Effects ---
-def calculate_damage(card, attacker, defender):
-    if card.get("type", "").lower() != "attack":
-        return 0
+# ================================================
+# CARD EFFECTS
+# ================================================
 
-    base_damage = card.get("damage", 10)
-    damage = base_damage
+def apply_card(card, attacker, defender):
+    card_type = card["type"].lower()
+    cost = card["mana_cost"]
 
-    # Element advantage
-    if card.get("strong_against") == defender.element:
-        damage = int(damage * 1.5)
-        print(Colors.GREEN + f"Elemental advantage! Damage increased to {damage}" + Colors.RESET)
-    elif card.get("weak_against") == defender.element:
-        damage = int(damage * 0.5)
-        print(Colors.RED + f"Elemental disadvantage! Damage reduced to {damage}" + Colors.RESET)
-
-    # Shield effect
-    if defender.activeShield:
-        damage = int(damage * 0.5)
-        print(
-            Colors.YELLOW +
-            f"{defender.name}'s shield absorbs damage! Damage reduced to {damage}" +
-            Colors.RESET
-        )
-        defender.activeShield = 0
-
-    # Curse effect
-    if defender.activeCurse:
-        damage = int(damage * 1.25)
-        print(Colors.MAGENTA + f"{defender.name} is cursed! Damage increased to {damage}" + Colors.RESET)
-
-    return damage
-
-
-def apply_card_effect(card, attacker, defender):
-    card_type = card.get("type", "").lower()
-    mana_cost = card.get("mana_cost", 0)
-
-    if attacker.mana < mana_cost:
+    if attacker.mana < cost:
         print(
             Colors.RED +
-            f"{attacker.name} does not have enough mana to play {card['name']}!" +
+            f"Not enough mana to play {card['name']}!" +
             Colors.RESET
         )
         return
 
-    attacker.mana -= mana_cost
+    attacker.mana -= cost
 
     if card_type == "attack":
-        damage = calculate_damage(card, attacker, defender)
-        defender.health -= damage
-        print(
-            Colors.RED +
-            f"{defender.name} takes {damage} damage! Remaining health: {defender.health}" +
-            Colors.RESET
-        )
+        do_attack(card, attacker, defender)
+
+    elif card_type == "defense":
+        do_shield(card, attacker)
 
     elif card_type == "heal":
-        heal_amount = card.get("heal", 0)
-        attacker.health = min(attacker.health + heal_amount, 100)
-        print(
-            Colors.GREEN +
-            f"{attacker.name} heals {heal_amount} HP! Current health: {attacker.health}" +
-            Colors.RESET
-        )
+        do_heal(card, attacker)
 
-    elif card_type == "shield":
-        shield_value = card.get("damage", 0)
-        attacker.activeShield = shield_value
-        print(
-            Colors.CYAN +
-            f"{attacker.name} gains a shield of {shield_value} for next turn!" +
-            Colors.RESET
-        )
+    elif card_type == "curse":
+        do_curse(card, attacker, defender)
 
     print(
         Colors.YELLOW +
-        f"{attacker.name} now has {attacker.mana} mana remaining." +
+        f"{attacker.name} has {attacker.mana} mana remaining." +
         Colors.RESET
     )
+
+
+# ------------------------------------------------
+# ATTACK
+# ------------------------------------------------
+
+def do_attack(card, attacker, defender):
+    damage = card.get("damage", 0)
+
+    # Element advantage
+    if ELEMENT_ADVANTAGE.get(card["element"]) == defender.element:
+        damage = int(damage * 1.5)
+        print(Colors.GREEN + "Elemental advantage! +50% damage." + Colors.RESET)
+
+    elif ELEMENT_ADVANTAGE.get(defender.element) == card["element"]:
+        damage = int(damage * 0.5)
+        print(Colors.RED + "Elemental disadvantage! -50% damage." + Colors.RESET)
+
+    # Ensure defender.shield exists
+    if defender.shield is None:
+        defender.shield = 0
+
+    # Apply shield
+    if defender.shield > 0:
+        absorbed = min(damage, defender.shield)
+        defender.shield -= absorbed
+        damage -= absorbed
+
+        print(
+            Colors.YELLOW +
+            f"{defender.name}'s shield absorbs {absorbed} damage!" +
+            Colors.RESET
+        )
+
+        # FIX: Shield actually breaks
+        if defender.shield <= 0:
+            defender.shield = 0
+            print(
+                Colors.YELLOW +
+                f"{defender.name}'s shield breaks!" +
+                Colors.RESET
+            )
+
+    # Remaining damage
+    defender.health -= damage
+    print(
+        Colors.RED +
+        f"{defender.name} takes {damage} damage! (Now {defender.health})" +
+        Colors.RESET
+    )
+
+# ------------------------------------------------
+# SHIELD
+# ------------------------------------------------
+
+def do_shield(card, player):
+    # Safely extract shield amount from card["effect"]
+    text = card.get("effect", "").lower()
+
+    amount = 15  # DEFAULT fallback
+
+    if "absorbing" in text:
+        # Extract the number reliably
+        words = text.split()
+        for w in words:
+            if w.isdigit():
+                amount = int(w)
+                break
+
+    # Shield does NOT stack endlessly unless you want it to
+    player.shield = amount
+
+    print(
+        Colors.CYAN +
+        f"{player.name} gains a shield absorbing {amount} damage!" +
+        Colors.RESET
+    )
+
+# ------------------------------------------------
+# HEAL
+# ------------------------------------------------
+
+def do_heal(card, player):
+    amount = card.get("heal", 0)
+    player.health = min(player.health + amount, MAX_HEALTH)
+
+    print(
+        Colors.GREEN +
+        f"{player.name} heals {amount} HP! (Now {player.health})" +
+        Colors.RESET
+    )
+
+
+# ------------------------------------------------
+# CURSE EFFECTS
+# Example: “Enemy loses 10 mana next turn.”
+# ------------------------------------------------
+
+def do_curse(card, attacker, defender):
+    effect = card["effect"].lower()
+
+    if "loses" in effect and "mana" in effect:
+        amount = int(effect.split("loses ")[1].split(" ")[0])
+        defender.curse_mana_loss = amount
+        print(
+            Colors.MAGENTA +
+            f"{defender.name} is cursed and will lose {amount} mana next turn!" +
+            Colors.RESET
+        )
+
+
+def resolve_curse(player):
+    if hasattr(player, "curse_mana_loss") and player.curse_mana_loss > 0:
+        print(
+            Colors.MAGENTA +
+            f"{player.name} loses {player.curse_mana_loss} mana due to curse!" +
+            Colors.RESET
+        )
+
+        player.mana = max(0, player.mana - player.curse_mana_loss)
+        player.curse_mana_loss = 0

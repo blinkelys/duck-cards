@@ -7,6 +7,8 @@ class Player:
         self.health = 100
         self.mana = 20
         self.element = ""
+        self.shield = 0
+        self.curse = ""
         self.activeCurse = ""
         self.activeShield = ""
         self.activeCards = []
@@ -20,6 +22,8 @@ class Enemy:
         self.health = 100
         self.mana = 20
         self.element = ""
+        self.shield = 0
+        self.curse = ""
         self.activeCurse = ""
         self.activeShield = ""
         self.activeCards = []
