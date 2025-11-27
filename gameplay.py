@@ -273,61 +273,75 @@ def do_attack(card, attacker, defender):
     )
 
 # ------------------------------------------------
-# SHIELD
-# ------------------------------------------------
-
-def do_shield(card, player):
-    # Safely extract shield amount from card["effect"]
-    text = card.get("effect", "").lower()
-
-    amount = 15  # DEFAULT fallback
-
-    if "absorbing" in text:
-        # Extract the number reliably
-        words = text.split()
-        for w in words:
-            if w.isdigit():
-                amount = int(w)
-                break
-
-    # Shield does NOT stack endlessly unless you want it to
-    player.shield = amount
-
-    print(
-        Colors.CYAN +
-        f"{player.name} gains a shield absorbing {amount} damage!" +
-        Colors.RESET
-    )
-
-# ------------------------------------------------
 # HEAL
 # ------------------------------------------------
-
 def do_heal(card, player):
-    amount = card.get("heal", 0)
-    player.health = min(player.health + amount, MAX_HEALTH)
+    # Use card damage if negative for heal
+    heal_amount = -card.get("damage", 0)  # negative damage = heal
+    player.health = min(MAX_HEALTH, player.health + heal_amount)
 
     print(
         Colors.GREEN +
-        f"{player.name} heals {amount} HP! (Now {player.health})" +
+        f"{player.name} heals {heal_amount} HP! (Now {player.health})" +
+        Colors.RESET
+    )
+
+
+# ------------------------------------------------
+# SHIELD
+# ------------------------------------------------
+def do_shield(card, player):
+    # Safely extract shield amount from card["effect"]
+    text = card.get("effect", "").lower()
+    amount = 15  # fallback
+
+    import re
+    match = re.search(r'(\d+)', text)
+    if match:
+        amount = int(match.group(1))
+
+    # Stack shields
+    if hasattr(player, "shield") and player.shield:
+        player.shield += amount
+    else:
+        player.shield = amount
+
+    print(
+        Colors.CYAN +
+        f"{player.name} gains a shield absorbing {amount} damage! (Total {player.shield})" +
         Colors.RESET
     )
 
 
 # ------------------------------------------------
 # CURSE EFFECTS
-# Example: “Enemy loses 10 mana next turn.”
 # ------------------------------------------------
-
 def do_curse(card, attacker, defender):
     effect = card["effect"].lower()
 
+    # Mana loss curse
     if "loses" in effect and "mana" in effect:
         amount = int(effect.split("loses ")[1].split(" ")[0])
         defender.curse_mana_loss = amount
         print(
             Colors.MAGENTA +
             f"{defender.name} is cursed and will lose {amount} mana next turn!" +
+            Colors.RESET
+        )
+    # Skip turn curse
+    elif "skips" in effect and "turn" in effect:
+        defender.skip_turn = True
+        print(
+            Colors.MAGENTA +
+            f"{defender.name} is cursed and will skip their next turn!" +
+            Colors.RESET
+        )
+    # Discard card curse
+    elif "discard" in effect and "card" in effect:
+        defender.discard_next = True
+        print(
+            Colors.MAGENTA +
+            f"{defender.name} is cursed and must discard a card next turn!" +
             Colors.RESET
         )
 
@@ -339,6 +353,15 @@ def resolve_curse(player):
             f"{player.name} loses {player.curse_mana_loss} mana due to curse!" +
             Colors.RESET
         )
-
         player.mana = max(0, player.mana - player.curse_mana_loss)
         player.curse_mana_loss = 0
+
+    if hasattr(player, "skip_turn") and player.skip_turn:
+        print(
+            Colors.MAGENTA +
+            f"{player.name} skips their turn due to curse!" +
+            Colors.RESET
+        )
+        player.skip_turn = False
+        return True  # signal to skip turn
+    return False
