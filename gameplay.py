@@ -23,13 +23,13 @@ def show_stats(player, enemy):
 def show_hand(player):
     print("Your current hand:")
     for idx, card in enumerate(player.hand):
-        print(f"{idx + 1}: {card['name']} ({card['element']})")
+        print(f"{idx + 1}: {card['name']} ({card['element']} {card['mana_cost']} Mana)")
 
 def draw_card(player):
     if player.deck:
         card = player.deck.pop(0)
         player.hand.append(card)
-        print(f"Drew card: {card['name']} ({card['element']})")
+        print(f"Drew card: {card['name']} ({card['element']} {card['mana_cost']} Mana)")
     else:
         print("No more cards in deck!")
 
@@ -43,7 +43,7 @@ def place_card(player):
         if 0 <= index < len(player.hand):
             card = player.hand.pop(index)
             player.activeCards.append(card)
-            print(f"Played card: {card['name']} ({card['element']})")
+            print(f"Played card: {card['name']} ({card['element']} {card['mana_cost']} Mana)")
             return card
         else:
             print("Invalid selection.")
