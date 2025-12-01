@@ -1,24 +1,19 @@
 import random
+import re
 
-# ================================================
-# CONSTANTS & CONFIG
-# ================================================
+# Core constants
+MANA_REGEN = 5
+MAX_HEALTH = 100
 
-MANA_REGEN_PER_TURN = 5
-
-ELEMENT_ADVANTAGE = {
+# Elemental strengths
+ELEMENT_ADV = {
     "Fire": "Earth",
     "Earth": "Air",
     "Air": "Water",
     "Water": "Fire"
 }
 
-MAX_HEALTH = 100
-
-
-# ================================================
-# COLORS
-# ================================================
+# Color codes
 class Colors:
     RESET = "\033[0m"
     BOLD = "\033[1m"
@@ -29,339 +24,191 @@ class Colors:
     MAGENTA = "\033[95m"
     BLUE = "\033[94m"
 
-
-# ================================================
-# CORE GAMEPLAY FUNCTIONS
-# ================================================
-
+# Game start / Display
 def start_game(player, enemy):
-    print(
-        Colors.YELLOW +
-        f"Your enemy is a {enemy.name} ({enemy.element})." +
-        Colors.RESET
-    )
+    print(f"{Colors.YELLOW}Your enemy is a {enemy.name} ({enemy.element}).{Colors.RESET}")
 
-    print(Colors.CYAN + "Dealing initial hand..." + Colors.RESET)
+    print(f"{Colors.CYAN}Dealing initial hand...{Colors.RESET}")
     for _ in range(3):
         draw_card(player)
 
     show_hand(player)
 
-
-# ------------------------------------------------
-# DISPLAY HELPERS
-# ------------------------------------------------
-
+# Display stats
 def show_stats(player, enemy):
-    print(Colors.MAGENTA + "\n--- Current Stats ---" + Colors.RESET)
-    print(
-        Colors.GREEN +
-        f"{player.name}: {player.health} HP | {player.mana} Mana | Shield: {player.shield}" +
-        Colors.RESET
-    )
-    print(
-        Colors.RED +
-        f"{enemy.name}: {enemy.health} HP | {enemy.mana} Mana | Shield: {enemy.shield}" +
-        Colors.RESET
-    )
+    print(f"{Colors.MAGENTA}\n--- Current Stats ---{Colors.RESET}")
+    print(f"{Colors.GREEN}{player.name}: {player.health} HP | {player.mana} Mana | Shield: {player.shield}{Colors.RESET}")
+    print(f"{Colors.RED}{enemy.name}: {enemy.health} HP | {enemy.mana} Mana | Shield: {enemy.shield}{Colors.RESET}")
 
-
+# Display player's hand
 def show_hand(player):
-    print(Colors.BLUE + "\nYour current hand:" + Colors.RESET)
+    print(f"{Colors.BLUE}\nYour current hand:{Colors.RESET}")
 
     if not player.hand:
-        print(Colors.YELLOW + "Your hand is empty!" + Colors.RESET)
+        print(f"{Colors.YELLOW}Your hand is empty!{Colors.RESET}")
         return
 
     for i, card in enumerate(player.hand, 1):
-        print(
-            f"{Colors.CYAN}{i}: {card['name']} "
-            f"({card['type']} | {card['mana_cost']} Mana){Colors.RESET}"
-        )
+        print(f"{Colors.CYAN}{i}: {card['name']} ({card['type']} | {card['mana_cost']} Mana){Colors.RESET}")
 
-
-# ------------------------------------------------
-# DRAWING + PLAYING CARDS
-# ------------------------------------------------
-
+# Draw a card from deck
 def draw_card(player):
     if not player.deck:
-        print(Colors.RED + "Your deck is empty!" + Colors.RESET)
+        print(f"{Colors.RED}Your deck is empty!{Colors.RESET}")
         return
 
     card = player.deck.pop(0)
     player.hand.append(card)
+    print(f"{Colors.GREEN}Drew: {card['name']} ({card['element']} {card['mana_cost']} Mana){Colors.RESET}")
 
-    print(
-        Colors.GREEN +
-        f"Drew card: {card['name']} ({card['element']} {card['mana_cost']} Mana)" +
-        Colors.RESET
-    )
-
-
+# Player card selection
 def choose_card(player):
     show_hand(player)
-    choice = input(Colors.YELLOW +
-                   "Select a card number (Enter = Skip): " + Colors.RESET)
+    choice = input(f"{Colors.YELLOW}Select card number (Enter = Skip): {Colors.RESET}")
 
     if not choice:
         return None
 
     try:
         idx = int(choice) - 1
-        if idx < 0 or idx >= len(player.hand):
-            print(Colors.RED + "Invalid card." + Colors.RESET)
-            return None
-        return player.hand.pop(idx)
-
+        return player.hand.pop(idx) if 0 <= idx < len(player.hand) else None
     except ValueError:
-        print(Colors.RED + "Invalid input." + Colors.RESET)
         return None
 
-
-# ================================================
-# TURN HANDLING
-# ================================================
-
+# Player turn logic
 def player_turn(player, enemy):
-    print(Colors.GREEN + Colors.BOLD + "\n--- YOUR TURN ---" + Colors.RESET)
+    print(f"{Colors.GREEN}{Colors.BOLD}\n--- YOUR TURN ---{Colors.RESET}")
 
-    # Regenerate mana
-    player.mana += MANA_REGEN_PER_TURN
-    print(
-        Colors.YELLOW +
-        f"You regenerate {MANA_REGEN_PER_TURN} mana. (Now {player.mana})" +
-        Colors.RESET
-    )
+    player.mana += MANA_REGEN
+    print(f"{Colors.YELLOW}You regenerate {MANA_REGEN} mana. (Now {player.mana}){Colors.RESET}")
 
-    # Draw card
     draw_card(player)
 
-    # Apply curse effects
-    resolve_curse(player)
+    if resolve_curse(player):
+        return
 
-    # Choose card
     card = choose_card(player)
     if card:
         apply_card(card, player, enemy)
 
-
+# Enemy turn logic
 def enemy_turn(enemy, player):
-    print(Colors.RED + Colors.BOLD +
-          f"\n--- {enemy.name.upper()} TURN ---" + Colors.RESET)
+    print(f"{Colors.RED}{Colors.BOLD}\n--- {enemy.name.upper()} TURN ---{Colors.RESET}")
 
-    enemy.mana += MANA_REGEN_PER_TURN
-    print(
-        Colors.YELLOW +
-        f"{enemy.name} regenerates {MANA_REGEN_PER_TURN} mana. (Now {enemy.mana})" +
-        Colors.RESET
-    )
+    enemy.mana += MANA_REGEN
+    print(f"{Colors.YELLOW}{enemy.name} regenerates {MANA_REGEN} mana. (Now {enemy.mana}){Colors.RESET}")
 
-    resolve_curse(enemy)
+    if resolve_curse(enemy):
+        return
 
-    # Draw
     if enemy.deck:
         enemy.hand.append(enemy.deck.pop(0))
 
-    # Choose playable card
     playable = [c for c in enemy.hand if c["mana_cost"] <= enemy.mana]
 
     if not playable:
-        print(
-            Colors.YELLOW +
-            f"{enemy.name} has no playable cards!" +
-            Colors.RESET
-        )
+        print(f"{Colors.YELLOW}{enemy.name} has no playable cards!{Colors.RESET}")
         return
 
     card = random.choice(playable)
     enemy.hand.remove(card)
 
-    print(
-        Colors.RED +
-        f"{enemy.name} plays {card['name']} ({card['type']})" +
-        Colors.RESET
-    )
-
+    print(f"{Colors.RED}{enemy.name} plays {card['name']} ({card['type']}){Colors.RESET}")
     apply_card(card, enemy, player)
 
-
-# ================================================
-# CARD EFFECTS
-# ================================================
-
+# Does card effects
 def apply_card(card, attacker, defender):
-    card_type = card["type"].lower()
     cost = card["mana_cost"]
-
     if attacker.mana < cost:
-        print(
-            Colors.RED +
-            f"Not enough mana to play {card['name']}!" +
-            Colors.RESET
-        )
+        print(f"{Colors.RED}Not enough mana to play {card['name']}!{Colors.RESET}")
         return
 
     attacker.mana -= cost
+    ctype = card["type"].lower()
 
-    if card_type == "attack":
-        do_attack(card, attacker, defender)
+    effect_funcs = {
+        "attack": do_attack,
+        "defense": do_shield,
+        "heal": do_heal,
+        "curse": do_curse
+    }
 
-    elif card_type == "defense":
-        do_shield(card, attacker)
+    if ctype in effect_funcs:
+        effect_funcs[ctype](card, attacker, defender)
 
-    elif card_type == "heal":
-        do_heal(card, attacker)
+    print(f"{Colors.YELLOW}{attacker.name} has {attacker.mana} mana remaining.{Colors.RESET}")
 
-    elif card_type == "curse":
-        do_curse(card, attacker, defender)
-
-    print(
-        Colors.YELLOW +
-        f"{attacker.name} has {attacker.mana} mana remaining." +
-        Colors.RESET
-    )
-
-
-# ------------------------------------------------
-# ATTACK
-# ------------------------------------------------
-
+# Attack effects
 def do_attack(card, attacker, defender):
     damage = card.get("damage", 0)
 
-    # Element advantage
-    if ELEMENT_ADVANTAGE.get(card["element"]) == defender.element:
+    # Element modifier
+    if ELEMENT_ADV.get(card["element"]) == defender.element:
         damage = int(damage * 1.5)
-        print(Colors.GREEN + "Elemental advantage! +50% damage." + Colors.RESET)
-
-    elif ELEMENT_ADVANTAGE.get(defender.element) == card["element"]:
+        print(f"{Colors.GREEN}Elemental advantage! +50% damage.{Colors.RESET}")
+    elif ELEMENT_ADV.get(defender.element) == card["element"]:
         damage = int(damage * 0.5)
-        print(Colors.RED + "Elemental disadvantage! -50% damage." + Colors.RESET)
+        print(f"{Colors.RED}Elemental disadvantage! -50% damage.{Colors.RESET}")
 
-    # Ensure defender.shield exists
-    if defender.shield is None:
+    # Shield absorb
+    absorbed = min(damage, defender.shield)
+    defender.shield -= absorbed
+    damage -= absorbed
+
+    if absorbed:
+        print(f"{Colors.YELLOW}{defender.name}'s shield absorbs {absorbed}!{Colors.RESET}")
+
+    if defender.shield <= 0:
         defender.shield = 0
 
-    # Apply shield
-    if defender.shield > 0:
-        absorbed = min(damage, defender.shield)
-        defender.shield -= absorbed
-        damage -= absorbed
-
-        print(
-            Colors.YELLOW +
-            f"{defender.name}'s shield absorbs {absorbed} damage!" +
-            Colors.RESET
-        )
-
-        # FIX: Shield actually breaks
-        if defender.shield <= 0:
-            defender.shield = 0
-            print(
-                Colors.YELLOW +
-                f"{defender.name}'s shield breaks!" +
-                Colors.RESET
-            )
-
-    # Remaining damage
     defender.health -= damage
-    print(
-        Colors.RED +
-        f"{defender.name} takes {damage} damage! (Now {defender.health})" +
-        Colors.RESET
-    )
+    print(f"{Colors.RED}{defender.name} takes {damage} damage! (Now {defender.health}){Colors.RESET}")
 
-# ------------------------------------------------
-# HEAL
-# ------------------------------------------------
-def do_heal(card, player):
-    # Use card damage if negative for heal
-    heal_amount = -card.get("damage", 0)  # negative damage = heal
+# Heal effects
+def do_heal(card, player, *_):
+    heal_amount = -card.get("damage", 0)  # negative damage acts as heal
     player.health = min(MAX_HEALTH, player.health + heal_amount)
+    print(f"{Colors.GREEN}{player.name} heals {heal_amount}! (Now {player.health}){Colors.RESET}")
 
-    print(
-        Colors.GREEN +
-        f"{player.name} heals {heal_amount} HP! (Now {player.health})" +
-        Colors.RESET
-    )
-
-
-# ------------------------------------------------
-# SHIELD
-# ------------------------------------------------
-def do_shield(card, player):
-    # Safely extract shield amount from card["effect"]
+# Shield effects
+def do_shield(card, player, *_):
     text = card.get("effect", "").lower()
-    amount = 15  # fallback
+    amount = 15
 
-    import re
-    match = re.search(r'(\d+)', text)
+    match = re.search(r"(\d+)", text)
     if match:
         amount = int(match.group(1))
 
-    # Stack shields
-    if hasattr(player, "shield") and player.shield:
-        player.shield += amount
-    else:
-        player.shield = amount
+    player.shield += amount
+    print(f"{Colors.CYAN}{player.name} gains {amount} shield! (Total {player.shield}){Colors.RESET}")
 
-    print(
-        Colors.CYAN +
-        f"{player.name} gains a shield absorbing {amount} damage! (Total {player.shield})" +
-        Colors.RESET
-    )
-
-
-# ------------------------------------------------
-# CURSE EFFECTS
-# ------------------------------------------------
+# Curse effects
 def do_curse(card, attacker, defender):
     effect = card["effect"].lower()
 
-    # Mana loss curse
     if "loses" in effect and "mana" in effect:
-        amount = int(effect.split("loses ")[1].split(" ")[0])
-        defender.curse_mana_loss = amount
-        print(
-            Colors.MAGENTA +
-            f"{defender.name} is cursed and will lose {amount} mana next turn!" +
-            Colors.RESET
-        )
-    # Skip turn curse
-    elif "skips" in effect and "turn" in effect:
+        defender.curse_mana_loss = int(effect.split("loses ")[1].split(" ")[0])
+        print(f"{Colors.MAGENTA}{defender.name} will lose mana next turn!{Colors.RESET}")
+
+    elif "skips" in effect:
         defender.skip_turn = True
-        print(
-            Colors.MAGENTA +
-            f"{defender.name} is cursed and will skip their next turn!" +
-            Colors.RESET
-        )
-    # Discard card curse
-    elif "discard" in effect and "card" in effect:
+        print(f"{Colors.MAGENTA}{defender.name} will skip their next turn!{Colors.RESET}")
+
+    elif "discard" in effect:
         defender.discard_next = True
-        print(
-            Colors.MAGENTA +
-            f"{defender.name} is cursed and must discard a card next turn!" +
-            Colors.RESET
-        )
+        print(f"{Colors.MAGENTA}{defender.name} must discard a card next turn!{Colors.RESET}")
 
-
+# Resolve curses at turn start
 def resolve_curse(player):
-    if hasattr(player, "curse_mana_loss") and player.curse_mana_loss > 0:
-        print(
-            Colors.MAGENTA +
-            f"{player.name} loses {player.curse_mana_loss} mana due to curse!" +
-            Colors.RESET
-        )
-        player.mana = max(0, player.mana - player.curse_mana_loss)
+    if getattr(player, "curse_mana_loss", 0) > 0:
+        loss = player.curse_mana_loss
+        player.mana = max(0, player.mana - loss)
+        print(f"{Colors.MAGENTA}{player.name} loses {loss} mana due to curse!{Colors.RESET}")
         player.curse_mana_loss = 0
 
-    if hasattr(player, "skip_turn") and player.skip_turn:
-        print(
-            Colors.MAGENTA +
-            f"{player.name} skips their turn due to curse!" +
-            Colors.RESET
-        )
+    if getattr(player, "skip_turn", False):
+        print(f"{Colors.MAGENTA}{player.name} skips their turn!{Colors.RESET}")
         player.skip_turn = False
-        return True  # signal to skip turn
+        return True
+
     return False
